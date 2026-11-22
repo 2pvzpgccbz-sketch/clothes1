@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODA STORE | متجر الملابس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #FAF9F6;
+            --bg-surface: #FFFFFF;
+            --text-primary: #121212;
+            --text-secondary: #666666;
+            --accent: #C5A059;
+            --accent-hover: #b08d47;
+            --sale-color: #B91C1C;
+            --border-color: #E5E5E5;
+            --font-ar: 'Cairo', sans-serif;
+            --font-en: 'Montserrat', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-ar);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        html[lang="en"] body {
+            font-family: var(--font-en);
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(250, 249, 246, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            direction: ltr;
+        }
+
+        .left-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            padding: 5px;
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.08);
+            color: var(--accent);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            background: var(--text-primary);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo {
+            font-family: var(--font-en);
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .lang-switch-mini {
+            background: none;
+            border: 1px solid var(--text-primary);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .lang-switch-mini:hover {
+            background: var(--text-primary);
+            color: #fff;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 320px;
+            max-width: 85vw;
+            height: 100vh;
+            background: var(--bg-surface);
+            z-index: 2001;
+            padding: 25px;
+            transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+        }
+
+        .side-drawer.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .gender-select-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .gender-btn {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .gender-btn:hover {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+
+        .category-menu {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .back-gender-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .cat-link {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            text-align: start;
+            font-family: inherit;
+        }
+
+        .cat-link:hover {
+            padding-inline-start: 22px;
+            color: var(--accent);
+        }
+
+        main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 5%;
+        }
+
+        .hero-collections {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .collection-banner {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #222;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .collection-banner img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            opacity: 0.78;
+        }
+
+        .collection-banner:hover img {
+            transform: scale(1.04);
+        }
+
+        .banner-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 60%, transparent 100%);
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            padding: 35px;
+            color: #fff;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .banner-content h2 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .banner-content p {
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+
+        .explore-btn {
+            padding: 12px 28px;
+            background: #fff;
+            color: var(--text-primary);
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .collection-banner:hover .explore-btn {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        #products-view {
+            display: none;
+        }
+
+        .view-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .view-title-group h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .view-subtitle {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .header-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .gender-tab-btn {
+            padding: 9px 18px;
+            border: 1px solid var(--text-primary);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .gender-tab-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .home-back-btn {
+            padding: 10px 20px;
+            background: var(--text-primary);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 28px;
+        }
+
+        .product-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.06);
+        }
+
+        .product-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 310px;
+            background: #f0efeb;
+            overflow: hidden;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .badge-sale {
+            position: absolute;
+            top: 12px;
+            inset-inline-start: 12px;
+            background: var(--sale-color);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .badge-stock {
+            position: absolute;
+            bottom: 12px;
+            inset-inline-start: 12px;
+            background: rgba(18, 18, 18, 0.85);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .product-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .current-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .old-price {
+            font-size: 0.95rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-details {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-details:hover {
+            background: var(--text-primary);
+            color: #fff;
+        }
+
+        .btn-add-quick {
+            padding: 10px 14px;
+            background: var(--text-primary);
+            color: #fff;
+            border: 1px solid var(--text-primary);
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn-add-quick:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .product-modal {
+            background: var(--bg-surface);
+            max-width: 820px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        @media (max-width: 720px) {
+            .product-modal {
+                grid-template-columns: 1fr;
+            }
+            .collection-banner {
+                height: 270px;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            inset-inline-end: 15px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .specs-box {
+            background: var(--bg-primary);
+            padding: 14px;
+            margin: 15px 0;
+            border-inline-start: 3px solid var(--accent);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .sizes-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0 20px;
+        }
+
+        .size-pill {
+            padding: 7px 13px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .size-pill.selected {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+
+        .add-cart-full {
+            width: 100%;
+            padding: 15px;
+            background: var(--text-primary);
+            color: #fff;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .add-cart-full:hover {
+            background: var(--accent);
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            left: -420px;
+            width: 400px;
+            max-width: 92vw;
+            height: 100vh;
+            background: var(--bg-surface);
+            z-index: 3500;
+            transition: left 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.15);
+        }
+
+        .cart-drawer.active {
+            left: 0;
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 65px;
+            height: 75px;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .qty-btn {
+            width: 26px;
+            height: 26px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        .checkout-form {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: var(--text-primary);
+            color: #fff;
+            padding: 14px 24px;
+            font-weight: 600;
+            z-index: 5000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            border-inline-start: 4px solid var(--accent);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="left-controls">
+            <button class="icon-btn" onclick="toggleMenuDrawer()" aria-label="Menu">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <button class="icon-btn" onclick="toggleCartDrawer()" aria-label="Cart">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
+
+        <div class="brand-logo" onclick="goHome()">MODA</div>
+
+        <button class="lang-switch-mini" id="header-lang-btn" onclick="toggleQuickLang()">EN</button>
+    </header>
+
+    <div class="drawer-overlay" id="menu-overlay" onclick="toggleMenuDrawer()"></div>
+    <aside class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <strong id="drawer-title">القائمة الرئيسية</strong>
+            <button class="icon-btn" onclick="toggleMenuDrawer()">✕</button>
+        </div>
+
+        <div class="gender-select-box" id="gender-step">
+            <h3 id="ask-gender-text">أنت عاوز قسم إيه؟</h3>
+            <button class="gender-btn" onclick="selectGender('men')">
+                <span id="btn-men-text">رجالي</span>
+                <span>←</span>
+            </button>
+            <button class="gender-btn" onclick="selectGender('women')">
+                <span id="btn-women-text">حريمي</span>
+                <span>←</span>
+            </button>
+        </div>
+
+        <div class="category-menu" id="category-step">
+            <button class="back-gender-btn" onclick="resetGenderStep()">
+                <span id="back-gender-label">↻ تغيير القسم (رجالي / حريمي)</span>
+            </button>
+            <h4 id="selected-gender-badge" style="margin-bottom: 10px; color: var(--accent);"></h4>
+            
+            <button class="cat-link" onclick="filterProducts('all')" id="nav-all">الجميع</button>
+            <button class="cat-link" onclick="filterProducts('winter')" id="nav-winter">كولكشن شتوي</button>
+            <button class="cat-link" onclick="filterProducts('summer')" id="nav-summer">كولكشن صيفي</button>
+            <button class="cat-link" onclick="filterProducts('underwear')" id="nav-underwear">ملابس داخلية</button>
+            <button class="cat-link" onclick="filterProducts('other')" id="nav-other">منتجات أخرى</button>
+        </div>
+    </aside>
+
+    <main>
+        <section id="home-collections" class="hero-collections">
+            <div class="collection-banner" onclick="openCollection('winter')">
+                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1200&q=80" alt="Winter Collection">
+                <div class="banner-gradient"></div>
+                <div class="banner-content">
+                    <div>
+                        <h2 id="banner-winter-title">كولكشن الشتاء</h2>
+                        <p id="banner-winter-sub">تشكيلة الهوديز والجاكيتات والسويت شيرت بخصومات مميزة</p>
+                    </div>
+                    <button class="explore-btn" id="explore-btn-1">تسوق الآن</button>
+                </div>
+            </div>
+
+            <div class="collection-banner" onclick="openCollection('summer')">
+                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1200&q=80" alt="Summer Collection">
+                <div class="banner-gradient"></div>
+                <div class="banner-content">
+                    <div>
+                        <h2 id="banner-summer-title">كولكشن الصيف</h2>
+                        <p id="banner-summer-sub">تيشيرتات قطنية وقمصان وبولو بألوان عصرية</p>
+                    </div>
+                    <button class="explore-btn" id="explore-btn-2">تسوق الآن</button>
+                </div>
+            </div>
+
+            <div class="collection-banner" onclick="openCollection('underwear')">
+                <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?auto=format&fit=crop&w=1200&q=80" alt="Underwear Collection">
+                <div class="banner-gradient"></div>
+                <div class="banner-content">
+                    <div>
+                        <h2 id="banner-under-title">الملابس الداخلية</h2>
+                        <p id="banner-under-sub">فانلات قطنية وبوكسرات وشرابات مريحة للاستخدام اليومي</p>
+                    </div>
+                    <button class="explore-btn" id="explore-btn-3">تسوق الآن</button>
+                </div>
+            </div>
+
+            <div class="collection-banner" onclick="openCollection('other')">
+                <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1200&q=80" alt="Other Products">
+                <div class="banner-gradient"></div>
+                <div class="banner-content">
+                    <div>
+                        <h2 id="banner-other-title">منتجات أخرى</h2>
+                        <p id="banner-other-sub">إكسسوارات وحظاظات أنيقة تكمل إطلالتك</p>
+                    </div>
+                    <button class="explore-btn" id="explore-btn-4">تسوق الآن</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="products-view">
+            <div class="view-header">
+                <div class="view-title-group">
+                    <span class="view-subtitle" id="current-gender-label"></span>
+                    <h2 id="current-category-title">المنتجات</h2>
+                </div>
+                <div class="header-actions-group">
+                    <button class="gender-tab-btn active" id="tab-men" onclick="switchGenderTab('men')">رجالي</button>
+                    <button class="gender-tab-btn" id="tab-women" onclick="switchGenderTab('women')">حريمي</button>
+                    <button class="home-back-btn" onclick="goHome()" id="back-home-btn">العودة للرئيسية</button>
+                </div>
+            </div>
+
+            <div class="products-grid" id="products-grid"></div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="product-modal-backdrop" onclick="closeProductModal(event)">
+        <div class="product-modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeProductModal()">✕</button>
+            <img id="modal-img" class="modal-img" src="" alt="">
+            <div class="modal-body">
+                <div>
+                    <h2 id="modal-title" style="margin-bottom: 10px;"></h2>
+                    <div class="price-row">
+                        <span class="current-price" id="modal-price"></span>
+                        <span class="old-price" id="modal-old-price"></span>
+                    </div>
+                    <p id="modal-stock" style="color: var(--sale-color); font-weight: 700; font-size: 0.9rem;"></p>
+
+                    <div class="specs-box" id="modal-specs"></div>
+
+                    <div id="size-selector-container">
+                        <strong id="choose-size-label" style="font-size: 0.9rem;">اختر المقاس:</strong>
+                        <div class="sizes-grid" id="sizes-grid"></div>
+                    </div>
+                </div>
+
+                <button class="add-cart-full" id="modal-add-btn" onclick="addFromModal()">إضافة إلى العربة</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="cart-overlay" onclick="toggleCartDrawer()"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3 id="cart-title">عربة التسوق</h3>
+            <button class="icon-btn" onclick="toggleCartDrawer()">✕</button>
+        </div>
+
+        <div class="cart-items" id="cart-items-container"></div>
+
+        <div class="cart-footer" id="cart-footer">
+            <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.15rem; margin-bottom: 15px;">
+                <span id="total-label">الإجمالي:</span>
+                <span id="cart-total-price">$0</span>
+            </div>
+
+            <button class="add-cart-full" id="proceed-checkout-btn" onclick="showCheckoutForm()">متابعة الطلب</button>
+
+            <form class="checkout-form" id="checkout-form" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label id="lbl-fullname">الاسم ثلاثي *</label>
+                    <input type="text" id="inp-fullname" required placeholder="أدخل اسمك الثلاثي">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-phone">رقم الهاتف *</label>
+                    <input type="tel" id="inp-phone" required placeholder="01xxxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-address">العنوان بالتفصيل *</label>
+                    <input type="text" id="inp-address" required placeholder="المحافظة - المنطقة - اسم الشارع">
+                </div>
+                <div class="form-group">
+                    <label id="lbl-notes">ملاحظات أخرى (اختياري)</label>
+                    <textarea id="inp-notes" rows="2" placeholder="أي تفاصيل إضافية للتوصيل..."></textarea>
+                </div>
+                <button type="submit" class="add-cart-full" style="background: var(--accent);" id="confirm-order-btn">تأكيد الطلب الآن</button>
+            </form>
+        </div>
+    </aside>
+
+    <div class="toast" id="toast">تمت الإضافة إلى العربة بنجاح ✓</div>
+
+    <script>
+        const menProducts = [
+            {
+                id: 'm-1', category: 'winter',
+                nameAr: 'هودي رمادي', nameEn: 'Grey Hoodie',
+                price: 6, oldPrice: 9, stock: 9,
+                descAr: 'هودي شتوي مريح بلون رمادي عصري وتدفئة عالية.',
+                descEn: 'Comfortable winter hoodie in modern grey with high warmth.',
+                hasSpecs: true,
+                img: 'photo1.1.jpeg'
+            },
+            {
+                id: 'm-2', category: 'winter',
+                nameAr: 'هودي أسود', nameEn: 'Black Hoodie',
+                price: 8, oldPrice: 10, stock: null,
+                descAr: 'هودي أسود كلاسيكي مناسب لجميع الإطلالات اليومية.',
+                descEn: 'Classic black hoodie suitable for all daily outfits.',
+                hasSpecs: true,
+                img: 'black hoodie.jpeg'
+            },
+            {
+                id: 'm-3', category: 'winter',
+                nameAr: 'جاكيت أسود', nameEn: 'Black Jacket',
+                price: 10, oldPrice: 15, stock: null,
+                descAr: 'جاكيت شتوي أنيق بلون أسود وتصميم عملي.',
+                descEn: 'Stylish black winter jacket with practical design.',
+                hasSpecs: true,
+                img: 'black jacket.jpeg'
+            },
+            {
+                id: 'm-4', category: 'winter',
+                nameAr: 'سويت شيرت', nameEn: 'Classic Sweatshirt',
+                price: 11, oldPrice: 14, stock: null,
+                descAr: 'سويت شيرت شتوي ناعم الملمس ومناسب للخروجات اليومية.',
+                descEn: 'Soft-touch winter sweatshirt ideal for daily wear.',
+                hasSpecs: true,
+                img: 'classic sweatshirt.jpeg'
+            },
+            {
+                id: 'm-5', category: 'winter',
+                nameAr: 'بنطلون قصة عادية', nameEn: 'Regular Fit Pants',
+                price: 8, oldPrice: 10, stock: null,
+                descAr: 'بنطلون بقصة عادية مريحة وعملي طوال اليوم.',
+                descEn: 'Comfortable regular fit pants practical for all-day wear.',
+                hasSpecs: true,
+                img: 'pants.jpeg'
+            },
+            {
+                id: 'm-6', category: 'winter',
+                nameAr: 'سويت شيرت بسوستة', nameEn: 'Zip-Up Sweatshirt',
+                price: 8, oldPrice: 10, stock: null,
+                descAr: 'سويت شيرت بسوستة أمامية عملية لسهولة الارتداء.',
+                descEn: 'Practical front zip-up sweatshirt for easy layering.',
+                hasSpecs: true,
+                img: 'zip-up sweatshirt.jpeg'
+            },
+            {
+                id: 'm-7', category: 'winter',
+                nameAr: 'جاكيت خامة ثقيلة', nameEn: 'Heavyweight Jacket',
+                price: 15, oldPrice: 20, stock: null,
+                descAr: 'جاكيت بخامة شتوية ثقيلة يوفر أقصى درجات التدفئة في البرد القارس.',
+                descEn: 'Heavyweight winter jacket offering maximum warmth in cold weather.',
+                hasSpecs: true,
+                img: 'heavyweight jacket.jpeg'
+            },
+            {
+                id: 'm-8', category: 'winter',
+                nameAr: 'جاكيت ووتر بروف', nameEn: 'Waterproof Jacket',
+                price: 15, oldPrice: 18, stock: null,
+                descAr: 'جاكيت مقاوم للماء والرياح مثالي للأجواء الممطرة.',
+                descEn: 'Water and wind resistant jacket ideal for rainy days.',
+                hasSpecs: true,
+                img: 'waterproof jacket.jpeg'
+            },
+            {
+                id: 'm-9', category: 'winter',
+                nameAr: 'هودي أوفر سايز', nameEn: 'Oversized Hoodie',
+                price: 9, oldPrice: 12, stock: null,
+                descAr: 'هودي بقصة أوفر سايز عصرية ومريحة جداً.',
+                descEn: 'Trendy oversized fit hoodie with superior comfort.',
+                hasSpecs: true,
+                img: 'oversize hoodies.jpeg'
+            },
+            {
+                id: 'm-10', category: 'summer',
+                nameAr: 'تيشيرت قصة عادية - أسود', nameEn: 'Regular Fit T-Shirt - Black',
+                price: 5, oldPrice: 7, stock: null,
+                descAr: 'تيشيرت صيفي أسود بقصة عادية وخامة خفيفة.',
+                descEn: 'Black summer regular fit t-shirt with lightweight fabric.',
+                hasSpecs: true,
+                img: 'black jacket.jpeg'
+            },
+            {
+                id: 'm-11', category: 'summer',
+                nameAr: 'تيشيرت قصة عادية - أبيض', nameEn: 'Regular Fit T-Shirt - White',
+                price: 4, oldPrice: 6, stock: null,
+                descAr: 'تيشيرت صيفي أبيض أساسي في خزانتك بقصة عادية.',
+                descEn: 'Essential white summer regular fit t-shirt.',
+                hasSpecs: true,
+                img: 'white.jpeg'
+            },
+            {
+                id: 'm-12', category: 'summer',
+                nameAr: 'قميص صيفي أنيق', nameEn: 'Classic Summer Shirt',
+                price: 10, oldPrice: 13, stock: null,
+                descAr: 'قميص صيفي بتصميم عصري مناسب للعمل والخروجات.',
+                descEn: 'Modern summer shirt suitable for casual and smart looks.',
+                hasSpecs: true,
+                img: 'classic shirt.jpeg'
+            },
+            {
+                id: 'm-13', category: 'summer',
+                nameAr: 'تيشيرت بولو (جميع الألوان)', nameEn: 'Polo T-Shirt (All Colors)',
+                price: 9, oldPrice: 12, stock: null,
+                descAr: 'تيشيرت بولو أنيق متوفر بجميع الألوان الجذابة.',
+                descEn: 'Elegant polo t-shirt available in all vibrant colors.',
+                hasSpecs: true,
+                img: 'polo.jpeg'
+            },
+            {
+                id: 'm-14', category: 'underwear',
+                nameAr: 'طقم 3 فانلات داخلية - أبيض', nameEn: '3-Pack White Undershirts',
+                price: 4, oldPrice: 8, stock: null,
+                descAr: 'عبوة اقتصادية مكونة من 3 قطع فانلات داخلية باللون الأبيض.',
+                descEn: 'Value pack of 3 comfortable white undershirts.',
+                hasSpecs: true,
+                img: 'undershirt.jpeg'
+            },
+            {
+                id: 'm-15', category: 'underwear',
+                nameAr: 'طقم بوكسرات قطنية', nameEn: 'Cotton Boxers Pack',
+                price: 5, oldPrice: 8, stock: null,
+                descAr: 'طقم بوكسرات مريحة عالية الجودة للاستخدام اليومي.',
+                descEn: 'High-quality comfortable boxers pack for daily wear.',
+                hasSpecs: true,
+                img: 'boxers.jpeg'
+            },
+            {
+                id: 'm-16', category: 'underwear',
+                nameAr: 'طقم 3 شرابات - أبيض', nameEn: '3-Pack White Socks',
+                price: 2, oldPrice: null, stock: null,
+                descAr: 'عبوة 3 أزواج شرابات باللون الأبيض ناعمة ومريحة.',
+                descEn: 'Pack of 3 soft and breathable white socks.',
+                hasSpecs: false,
+                img: 'socks.jpeg'
+            },
+            {
+                id: 'm-17', category: 'other',
+                nameAr: 'حظاظة لون أسود', nameEn: 'Black Wristband Bracelet',
+                price: 1, oldPrice: null, stock: null,
+                descAr: 'حظاظة يد أنيقة باللون الأسود تناسب جميع الأذواق.',
+                descEn: 'Stylish black wristband bracelet suitable for everyone.',
+                hasSpecs: false,
+                img: 'bracelet.jpeg'
+            }
+        ];
+
+        const womenProducts = [
+            {
+                id: 'w-1', category: 'winter',
+                nameAr: 'بالطو شتوي طويل - بيج', nameEn: 'Women Long Winter Coat - Beige',
+                price: 18, oldPrice: 24, stock: 7,
+                descAr: 'بالطو حريمي شتوي أنيق بقصة كلاسيكية دافئة.',
+                descEn: 'Elegant women winter coat with warm classic cut.',
+                hasSpecs: true,
+                img: 'long winter coat.jpeg'
+            },
+            {
+                id: 'w-2', category: 'winter',
+                nameAr: 'بلوفر تريكو ناعم - أوف وايت', nameEn: 'Women Knit Sweater - Off-White',
+                price: 10, oldPrice: 14, stock: null,
+                descAr: 'بلوفر حريمي تريكو ناعم بتصميم عصري مريح.',
+                descEn: 'Soft women knit sweater with modern cozy design.',
+                hasSpecs: true,
+                img: 'Women Knit Sweater.jpeg'
+            },
+            {
+                id: 'w-3', category: 'winter',
+                nameAr: 'كارديجان شتوي مفتوح', nameEn: 'Women Open Winter Cardigan',
+                price: 12, oldPrice: 16, stock: null,
+                descAr: 'كارديجان حريمي عملي وأنيق مناسب لجميع الإطلالات الشتوية.',
+                descEn: 'Practical and chic women cardigan for winter looks.',
+                hasSpecs: true,
+                img: 'Cardigan.jpeg'
+            },
+            {
+                id: 'w-4', category: 'winter',
+                nameAr: 'هودي حريمي كروب - وردي', nameEn: 'Women Cropped Hoodie - Pink',
+                price: 9, oldPrice: 12, stock: null,
+                descAr: 'هودي حريمي عصري مبطن للتدفئة بلون جذاب.',
+                descEn: 'Trendy fleece-lined women hoodie in attractive pink.',
+                hasSpecs: true,
+                img: 'Cropped Hoodie.jpeg'
+            },
+            {
+                id: 'w-5', category: 'winter',
+                nameAr: 'جاكيت بافر حريمي مبطن', nameEn: 'Women Puffer Jacket',
+                price: 16, oldPrice: 21, stock: null,
+                descAr: 'جاكيت بافر حريمي خفيف الوزن وعالي التدفئة ومقاوم للرياح.',
+                descEn: 'Lightweight warm wind-resistant women puffer jacket.',
+                hasSpecs: true,
+                img: 'Women Puffer Jacket.jpeg'
+            },
+            {
+                id: 'w-6', category: 'summer',
+                nameAr: 'فستان صيفي كاجوال - مشجر', nameEn: 'Women Floral Summer Dress',
+                price: 12, oldPrice: 16, stock: null,
+                descAr: 'فستان صيفي خفيف ومريح بألوان مبهجة للخروجات النهارية.',
+                descEn: 'Light and breezy summer dress for daytime outings.',
+                hasSpecs: true,
+                img: 'Women Floral Summer Dress.jpeg'
+            },
+            {
+                id: 'w-7', category: 'summer',
+                nameAr: 'بلوزة شيفون صيفي - أبيض', nameEn: 'Women Chiffon Blouse - White',
+                price: 8, oldPrice: 11, stock: null,
+                descAr: 'بلوزة حريمي أنيقة مناسبة للعمل والمناسبات الكاجوال.',
+                descEn: 'Elegant women blouse suitable for work and casual wear.',
+                hasSpecs: true,
+                img: 'Women Chiffon Blouse - White.jpeg'
+            },
+            {
+                id: 'w-8', category: 'summer',
+                nameAr: 'تيشيرت حريمي قطن أوفر سايز', nameEn: 'Women Oversized Cotton Tee',
+                price: 6, oldPrice: 9, stock: null,
+                descAr: 'تيشيرت حريمي صيفي ناعم ومريح بقصة عصرية.',
+                descEn: 'Soft and comfy women summer tee with modern fit.',
+                hasSpecs: true,
+                img: 'Women Oversized Cotton Tee.jpeg'
+            },
+            {
+                id: 'w-9', category: 'summer',
+                nameAr: 'بنطلون وايد ليج صيفي', nameEn: 'Women Wide-Leg Summer Pants',
+                price: 10, oldPrice: 14, stock: null,
+                descAr: 'بنطلون حريمي واسع بقماش انسيابي بارد للصيف.',
+                descEn: 'Flowy cool wide-leg pants designed for summer comfort.',
+                hasSpecs: true,
+                img: 'Women Wide-Leg Summer Pants.jpeg'
+            },
+            {
+                id: 'w-10', category: 'underwear',
+                nameAr: 'طقم بيجامة قطن حريمي', nameEn: 'Women Cotton Pajama Set',
+                price: 9, oldPrice: 13, stock: null,
+                descAr: 'طقم بيجامة منزلي قطني ناعم ومريح جداً.',
+                descEn: 'Super soft and comfortable women cotton pajama set.',
+                hasSpecs: true,
+                img: 'Women Cotton Pajama Set.jpeg'
+            },
+            {
+                id: 'w-11', category: 'underwear',
+                nameAr: 'طقم 3 توب داخلي قطن', nameEn: '3-Pack Women Cotton Camisoles',
+                price: 5, oldPrice: 8, stock: null,
+                descAr: 'عبوة 3 قطع توب داخلي حريمي ناعم للاستخدام اليومي.',
+                descEn: 'Value pack of 3 soft daily women cotton camisoles.',
+                hasSpecs: true,
+                img: '3-Pack Women Cotton Camisoles.jpeg'
+            },
+            {
+                id: 'w-12', category: 'underwear',
+                nameAr: 'طقم 3 شرابات حريمي ملونة', nameEn: '3-Pack Women Pastel Socks',
+                price: 2, oldPrice: 4, stock: null,
+                descAr: 'عبوة 3 شرابات حريمي قطنية بألوان هادئة.',
+                descEn: 'Pack of 3 women cotton socks in pastel colors.',
+                hasSpecs: false,
+                img: '3-Pack Women Pastel Socks.jpeg'
+            },
+            {
+                id: 'w-13', category: 'other',
+                nameAr: 'شنطة يد حريمي كروس', nameEn: 'Women Crossbody Handbag',
+                price: 8, oldPrice: 12, stock: null,
+                descAr: 'شنطة يد حريمي أنيقة بحجم عملي للخروجات اليومية.',
+                descEn: 'Chic practical crossbody handbag for daily outings.',
+                hasSpecs: false,
+                img: 'Women Crossbody Handbag.jpeg'
+            },
+            {
+                id: 'w-14', category: 'other',
+                nameAr: 'إسكارف حريري منقوش', nameEn: 'Women Printed Silk Scarf',
+                price: 4, oldPrice: 6, stock: null,
+                descAr: 'إسكارف حريمي ناعم يضيف لمسة أناقة مميزة لإطلالتك.',
+                descEn: 'Soft women scarf adding an elegant touch to your outfit.',
+                hasSpecs: false,
+                img: 'Women Printed Silk Scarf.jpeg'
+            }
+        ];
+
+        function getSectionProducts(gender) {
+            return gender === 'women' ? womenProducts : menProducts;
+        }
+
+        const i18n = {
+            ar: {
+                drawerTitle: 'القائمة الرئيسية',
+                askGender: 'أنت عاوز قسم إيه؟',
+                men: 'رجالي',
+                women: 'حريمي',
+                backGender: '↻ تغيير القسم (رجالي / حريمي)',
+                navAll: 'الجميع',
+                navWinter: 'كولكشن شتوي',
+                navSummer: 'كولكشن صيفي',
+                navUnderwear: 'ملابس داخلية',
+                navOther: 'منتجات أخرى',
+                bannerWinterTitle: 'كولكشن الشتاء',
+                bannerWinterSub: 'تشكيلة الهوديز والجاكيتات والسويت شيرت بخصومات مميزة',
+                bannerSummerTitle: 'كولكشن الصيف',
+                bannerSummerSub: 'تيشيرتات قطنية وقمصان وبولو بألوان عصرية',
+                bannerUnderTitle: 'الملابس الداخلية',
+                bannerUnderSub: 'فانلات قطنية وبوكسرات وشرابات مريحة للاستخدام اليومي',
+                bannerOtherTitle: 'منتجات أخرى',
+                bannerOtherSub: 'إكسسوارات وحظاظات أنيقة تكمل إطلالتك',
+                explore: 'تسوق الآن',
+                backHome: 'العودة للرئيسية',
+                details: 'التفاصيل',
+                sale: 'خصم',
+                stockAvailable: 'متاح منه {n} قطع فقط',
+                specsText: '<strong>الخامة:</strong> 60% قطن و 40% بوليستر.<br><strong>المقاسات المتاحة:</strong> جميع المقاسات من XS حتى 3XL.',
+                chooseSize: 'اختر المقاس:',
+                addToCart: 'إضافة إلى العربة',
+                cartTitle: 'عربة التسوق',
+                emptyCart: 'عربة التسوق فارغة حالياً.',
+                total: 'الإجمالي:',
+                proceedCheckout: 'متابعة الطلب',
+                lblFullname: 'الاسم ثلاثي *',
+                lblPhone: 'رقم الهاتف *',
+                lblAddress: 'العنوان بالتفصيل *',
+                lblNotes: 'ملاحظات أخرى (اختياري)',
+                confirmOrder: 'تأكيد الطلب الآن',
+                addedToast: 'تمت الإضافة إلى العربة بنجاح ✓',
+                orderSuccess: 'شكراً لك يا {name}! تم استلام طلبك بنجاح برقم #{id} وسيتم التواصل معك قريباً على رقم {phone}.',
+                genderPrefixMen: 'قسم الرجالي',
+                genderPrefixWomen: 'قسم الحريمي'
+            },
+            en: {
+                drawerTitle: 'Main Menu',
+                askGender: 'Select Department:',
+                men: 'Men',
+                women: 'Women',
+                backGender: '↻ Change Department (Men / Women)',
+                navAll: 'All Products',
+                navWinter: 'Winter Collection',
+                navSummer: 'Summer Collection',
+                navUnderwear: 'Underwear',
+                navOther: 'Other Products',
+                bannerWinterTitle: 'Winter Collection',
+                bannerWinterSub: 'Hoodies, jackets, and sweatshirts with special discounts',
+                bannerSummerTitle: 'Summer Collection',
+                bannerSummerSub: 'Cotton t-shirts, shirts, and polos in modern colors',
+                bannerUnderTitle: 'Underwear',
+                bannerUnderSub: 'Comfortable cotton undershirts, boxers, and socks',
+                bannerOtherTitle: 'Other Products',
+                bannerOtherSub: 'Stylish wristbands and accessories to complete your look',
+                explore: 'Shop Now',
+                backHome: 'Back to Home',
+                details: 'Details',
+                sale: 'SALE',
+                stockAvailable: 'Only {n} pieces available',
+                specsText: '<strong>Material:</strong> 60% Cotton & 40% Polyester.<br><strong>Available Sizes:</strong> All sizes from XS to 3XL.',
+                chooseSize: 'Select Size:',
+                addToCart: 'Add to Cart',
+                cartTitle: 'Shopping Cart',
+                emptyCart: 'Your shopping cart is currently empty.',
+                total: 'Total:',
+                proceedCheckout: 'Proceed to Checkout',
+                lblFullname: 'Full Name (Triple) *',
+                lblPhone: 'Phone Number *',
+                lblAddress: 'Detailed Address *',
+                lblNotes: 'Other Notes (Optional)',
+                confirmOrder: 'Confirm Order Now',
+                addedToast: 'Added to cart successfully ✓',
+                orderSuccess: 'Thank you {name}! Your order #{id} has been received and we will contact you shortly at {phone}.',
+                genderPrefixMen: 'Men Department',
+                genderPrefixWomen: 'Women Department'
+            }
+        };
+
+        let currentLang = 'ar';
+        let selectedGender = 'men';
+        let currentCategory = 'all';
+        let cart = [];
+        let activeProduct = null;
+        let selectedSize = 'M';
+        const availableSizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('header-lang-btn').textContent = lang === 'ar' ? 'EN' : 'عربي';
+            applyTranslations();
+            if (document.getElementById('products-view').style.display === 'block') {
+                renderProducts();
+            }
+            renderCart();
+        }
+
+        function toggleQuickLang() {
+            setLanguage(currentLang === 'ar' ? 'en' : 'ar');
+        }
+
+        function applyTranslations() {
+            const t = i18n[currentLang];
+            document.getElementById('drawer-title').textContent = t.drawerTitle;
+            document.getElementById('ask-gender-text').textContent = t.askGender;
+            document.getElementById('btn-men-text').textContent = t.men;
+            document.getElementById('btn-women-text').textContent = t.women;
+            document.getElementById('tab-men').textContent = t.men;
+            document.getElementById('tab-women').textContent = t.women;
+            document.getElementById('back-gender-label').textContent = t.backGender;
+            document.getElementById('nav-all').textContent = t.navAll;
+            document.getElementById('nav-winter').textContent = t.navWinter;
+            document.getElementById('nav-summer').textContent = t.navSummer;
+            document.getElementById('nav-underwear').textContent = t.navUnderwear;
+            document.getElementById('nav-other').textContent = t.navOther;
+
+            document.getElementById('banner-winter-title').textContent = t.bannerWinterTitle;
+            document.getElementById('banner-winter-sub').textContent = t.bannerWinterSub;
+            document.getElementById('banner-summer-title').textContent = t.bannerSummerTitle;
+            document.getElementById('banner-summer-sub').textContent = t.bannerSummerSub;
+            document.getElementById('banner-under-title').textContent = t.bannerUnderTitle;
+            document.getElementById('banner-under-sub').textContent = t.bannerUnderSub;
+            document.getElementById('banner-other-title').textContent = t.bannerOtherTitle;
+            document.getElementById('banner-other-sub').textContent = t.bannerOtherSub;
+
+            ['explore-btn-1','explore-btn-2','explore-btn-3','explore-btn-4'].forEach(id => {
+                document.getElementById(id).textContent = t.explore;
+            });
+
+            document.getElementById('back-home-btn').textContent = t.backHome;
+            document.getElementById('choose-size-label').textContent = t.chooseSize;
+            document.getElementById('modal-add-btn').textContent = t.addToCart;
+            document.getElementById('cart-title').textContent = t.cartTitle;
+            document.getElementById('total-label').textContent = t.total;
+            document.getElementById('proceed-checkout-btn').textContent = t.proceedCheckout;
+            document.getElementById('lbl-fullname').textContent = t.lblFullname;
+            document.getElementById('lbl-phone').textContent = t.lblPhone;
+            document.getElementById('lbl-address').textContent = t.lblAddress;
+            document.getElementById('lbl-notes').textContent = t.lblNotes;
+            document.getElementById('confirm-order-btn').textContent = t.confirmOrder;
+            document.getElementById('toast').textContent = t.addedToast;
+        }
+
+        function toggleMenuDrawer() {
+            document.getElementById('side-drawer').classList.toggle('active');
+            document.getElementById('menu-overlay').classList.toggle('active');
+        }
+
+        function selectGender(gender) {
+            selectedGender = gender;
+            const t = i18n[currentLang];
+            document.getElementById('gender-step').style.display = 'none';
+            document.getElementById('category-step').style.display = 'flex';
+            document.getElementById('selected-gender-badge').textContent =
+                gender === 'men' ? t.genderPrefixMen : t.genderPrefixWomen;
+        }
+
+        function resetGenderStep() {
+            document.getElementById('gender-step').style.display = 'block';
+            document.getElementById('category-step').style.display = 'none';
+        }
+
+        function switchGenderTab(gender) {
+            selectedGender = gender;
+            renderProducts();
+        }
+
+        function filterProducts(cat) {
+            currentCategory = cat;
+            toggleMenuDrawer();
+            showProductsSection();
+        }
+
+        function openCollection(cat) {
+            currentCategory = cat;
+            showProductsSection();
+        }
+
+        function goHome() {
+            document.getElementById('home-collections').style.display = 'flex';
+            document.getElementById('products-view').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showProductsSection() {
+            document.getElementById('home-collections').style.display = 'none';
+            document.getElementById('products-view').style.display = 'block';
+            renderProducts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderProducts() {
+            const t = i18n[currentLang];
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            const catNames = {
+                all: t.navAll,
+                winter: t.navWinter,
+                summer: t.navSummer,
+                underwear: t.navUnderwear,
+                other: t.navOther
+            };
+            document.getElementById('current-category-title').textContent = catNames[currentCategory];
+            document.getElementById('current-gender-label').textContent =
+                selectedGender === 'men' ? t.genderPrefixMen : t.genderPrefixWomen;
+
+            document.getElementById('tab-men').classList.toggle('active', selectedGender === 'men');
+            document.getElementById('tab-women').classList.toggle('active', selectedGender === 'women');
+
+            const sourceList = getSectionProducts(selectedGender);
+            const filtered = currentCategory === 'all'
+                ? sourceList
+                : sourceList.filter(p => p.category === currentCategory);
+
+            filtered.forEach(prod => {
+                const name = currentLang === 'ar' ? prod.nameAr : prod.nameEn;
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => openProductModal(prod.id);
+
+                card.innerHTML = `
+                    <div class="product-img-wrap">
+                        <img src="${prod.img}" alt="${name}" loading="lazy">
+                        ${prod.oldPrice ? `<span class="badge-sale">${t.sale}</span>` : ''}
+                        ${prod.stock ? `<span class="badge-stock">${t.stockAvailable.replace('{n}', prod.stock)}</span>` : ''}
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">${name}</h3>
+                            <p class="product-meta">${prod.hasSpecs ? (currentLang === 'ar' ? '60% قطن • 40% بوليستر (XS - 3XL)' : '60% Cotton • 40% Polyester (XS - 3XL)') : ''}</p>
+                        </div>
+                        <div>
+                            <div class="price-row">
+                                <span class="current-price">$${prod.price}</span>
+                                ${prod.oldPrice ? `<span class="old-price">$${prod.oldPrice}</span>` : ''}
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-details" onclick="event.stopPropagation(); openProductModal('${prod.id}')">${t.details}</button>
+                                <button class="btn-add-quick" onclick="event.stopPropagation(); quickAdd('${prod.id}')">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function findProductById(id) {
+            return getSectionProducts(selectedGender).find(p => p.id === id)
+                || menProducts.find(p => p.id === id)
+                || womenProducts.find(p => p.id === id);
+        }
+
+        function openProductModal(id) {
+            const prod = findProductById(id);
+            if (!prod) return;
+
+            activeProduct = prod;
+            selectedSize = 'M';
+            const t = i18n[currentLang];
+
+            document.getElementById('modal-img').src = prod.img;
+            document.getElementById('modal-title').textContent = currentLang === 'ar' ? prod.nameAr : prod.nameEn;
+            document.getElementById('modal-price').textContent = `$${prod.price}`;
+            document.getElementById('modal-old-price').textContent = prod.oldPrice ? `$${prod.oldPrice}` : '';
+
+            const stockEl = document.getElementById('modal-stock');
+            stockEl.textContent = prod.stock ? t.stockAvailable.replace('{n}', prod.stock) : '';
+
+            const specsEl = document.getElementById('modal-specs');
+            const desc = currentLang === 'ar' ? prod.descAr : prod.descEn;
+            specsEl.innerHTML = `<p style="margin-bottom:6px;">${desc}</p>` + (prod.hasSpecs ? t.specsText : '');
+
+            const sizeContainer = document.getElementById('size-selector-container');
+            const sizesGrid = document.getElementById('sizes-grid');
+            if (prod.hasSpecs) {
+                sizeContainer.style.display = 'block';
+                sizesGrid.innerHTML = '';
+                availableSizes.forEach(sz => {
+                    const btn = document.createElement('button');
+                    btn.className = 'size-pill' + (sz === selectedSize ? ' selected' : '');
+                    btn.textContent = sz;
+                    btn.onclick = () => {
+                        selectedSize = sz;
+                        document.querySelectorAll('.size-pill').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                    };
+                    sizesGrid.appendChild(btn);
+                });
+            } else {
+                sizeContainer.style.display = 'none';
+            }
+
+            document.getElementById('product-modal-backdrop').classList.add('active');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal-backdrop').classList.remove('active');
+        }
+
+        function quickAdd(id) {
+            const prod = findProductById(id);
+            if (!prod) return;
+            addToCart(prod, prod.hasSpecs ? 'M' : null);
+        }
+
+        function addFromModal() {
+            if (!activeProduct) return;
+            addToCart(activeProduct, activeProduct.hasSpecs ? selectedSize : null);
+            closeProductModal();
+        }
+
+        function addToCart(prod, size) {
+            const gender = String(prod.id).startsWith('w-') ? 'women' : 'men';
+            const key = `${prod.id}-${size || 'nosize'}`;
+            const existing = cart.find(item => item.key === key);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    key,
+                    id: prod.id,
+                    gender,
+                    nameAr: prod.nameAr,
+                    nameEn: prod.nameEn,
+                    price: prod.price,
+                    img: prod.img,
+                    size: size,
+                    qty: 1
+                });
+            }
+            updateCartUI();
+            showToast();
+        }
+
+        function updateQty(key, delta) {
+            const idx = cart.findIndex(item => item.key === key);
+            if (idx === -1) return;
+            cart[idx].qty += delta;
+            if (cart[idx].qty <= 0) {
+                cart.splice(idx, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').textContent = count;
+            renderCart();
+        }
+
+        function renderCart() {
+            const t = i18n[currentLang];
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color: var(--text-secondary); margin-top: 40px;">${t.emptyCart}</p>`;
+                footer.style.display = 'none';
+                document.getElementById('checkout-form').style.display = 'none';
+                document.getElementById('proceed-checkout-btn').style.display = 'block';
+                return;
+            }
+
+            footer.style.display = 'block';
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                const name = currentLang === 'ar' ? item.nameAr : item.nameEn;
+                const genderLabel = item.gender === 'women' ? t.women : t.men;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <img src="${item.img}" alt="${name}">
+                    <div class="cart-item-info">
+                        <strong style="font-size:0.95rem;">${name}</strong>
+                        <div style="font-size:0.78rem; color:var(--text-secondary);">${genderLabel}${item.size ? ` • Size: ${item.size}` : ''}</div>
+                        <div style="font-weight:700; color:var(--accent);">$${item.price * item.qty}</div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="updateQty('${item.key}', -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty('${item.key}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('cart-total-price').textContent = `$${total}`;
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cart-drawer').classList.toggle('active');
+            document.getElementById('cart-overlay').classList.toggle('active');
+        }
+
+        function showCheckoutForm() {
+            document.getElementById('proceed-checkout-btn').style.display = 'none';
+            document.getElementById('checkout-form').style.display = 'flex';
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const t = i18n[currentLang];
+            const name = document.getElementById('inp-fullname').value;
+            const phone = document.getElementById('inp-phone').value;
+            const orderId = Math.floor(1000 + Math.random() * 9000);
+
+            alert(t.orderSuccess
+                .replace('{name}', name)
+                .replace('{id}', orderId)
+                .replace('{phone}', phone)
+            );
+
+            cart = [];
+            document.getElementById('checkout-form').reset();
+            updateCartUI();
+            toggleCartDrawer();
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>
